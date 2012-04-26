@@ -1,0 +1,92 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>MacMouseWheel.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">pixelbreaker</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">osx</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">system</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Capabilities</span>;    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">InteractiveObject</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Stage</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MouseEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">external</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ExternalInterface</span>;
+    <span class="ActionScriptASDoc">/**
+     * @author Gabriel Bucknall
+     * 
+     * Class that supports using the mouseWheel on Mac OS, requires javascript class
+     * swfmacmousewheel.js
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">MacMouseWheel</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">instance</span>:<span class="ActionScriptDefault_Text">MacMouseWheel</span>;
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_stage</span>:<span class="ActionScriptDefault_Text">Stage</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_currItem</span>:<span class="ActionScriptDefault_Text">InteractiveObject</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_clonedEvent</span>:<span class="ActionScriptDefault_Text">MouseEvent</span>;
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">MacMouseWheel</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">instance</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">instance</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MacMouseWheel</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">SingletonEnforcer</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">instance</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">MacMouseWheel</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">enforcer</span>:<span class="ActionScriptDefault_Text">SingletonEnforcer</span> <span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptComment">/*
+         * Initialize the MacMouseWheel class
+         * 
+         * @param stage Stage instance e.g DocumentClass.stage
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">setup</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">stage</span>:<span class="ActionScriptDefault_Text">Stage</span> <span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">isMac</span>:<span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Capabilities</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">os</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">toLowerCase</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">indexOf</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"mac"</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptOperator">-</span>1;
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">isMac</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptDefault_Text">getInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">_setup</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">stage</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">_setup</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">stage</span>:<span class="ActionScriptDefault_Text">Stage</span> <span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_stage</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">stage</span>;
+            <span class="ActionScriptDefault_Text">_stage</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_MOVE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_getItemUnderCursor</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">ExternalInterface</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">available</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">ExternalInterface</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addCallback</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">'externalMouseEvent'</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">_externalMouseEvent</span> <span class="ActionScriptBracket/Brace">)</span>;    
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">_getItemUnderCursor</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">e</span>:<span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_currItem</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">InteractiveObject</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">e</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_clonedEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">e</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">_externalMouseEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">delta</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">wheelEvent</span>:<span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">(</span> 
+                    <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_WHEEL</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptReserved">true</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptReserved">false</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">localX</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">localY</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">relatedObject</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ctrlKey</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">altKey</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">shiftKey</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">_clonedEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">buttonDown</span><span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">delta</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_currItem</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">wheelEvent</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+
+<span class="ActionScriptReserved">internal</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">SingletonEnforcer</span>{}
+</pre></body>
+</html>

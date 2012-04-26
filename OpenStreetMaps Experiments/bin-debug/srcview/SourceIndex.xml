@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Learning ModestMaps</title>
+	<nodes>
+		<node label="design-files">
+			<node icon="flaIcon" label="Assets.fla" url="source/design-files/Assets.fla"/>
+			<node label="Assets.swc" url="source/design-files/Assets.swc"/>
+			<node icon="swfIcon" label="Assets.swf" url="source/design-files/Assets.swf"/>
+		</node>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="src">
+			<node label="assets">
+				<node label="images">
+					<node icon="imageIcon" label="Shadow-256.png" url="source/assets/images/Shadow-256.png.html"/>
+				</node>
+			</node>
+			<node icon="packageIcon" label="away3D" expanded="true">
+				<node icon="actionScriptIcon" label="Basic3DScene.as" url="source/away3D/Basic3DScene.as.html"/>
+				<node icon="actionScriptIcon" label="Hover3DScene.as" url="source/away3D/Hover3DScene.as.html"/>
+			</node>
+			<node icon="packageIcon" label="away3D.objects" expanded="true">
+				<node icon="actionScriptIcon" label="CubeGrid.as" url="source/away3D/objects/CubeGrid.as.html"/>
+				<node icon="actionScriptIcon" label="GridCubeMaterial.as" url="source/away3D/objects/GridCubeMaterial.as.html"/>
+				<node icon="actionScriptIcon" label="OSMCube.as" url="source/away3D/objects/OSMCube.as.html"/>
+				<node icon="actionScriptIcon" label="OSMPlane.as" url="source/away3D/objects/OSMPlane.as.html"/>
+				<node icon="actionScriptIcon" label="WavePlane.as" url="source/away3D/objects/WavePlane.as.html"/>
+			</node>
+			<node icon="packageIcon" label="com.pixelbreaker.ui.osx" expanded="true">
+				<node icon="actionScriptIcon" label="MacMouseWheel.as" url="source/com/pixelbreaker/ui/osx/MacMouseWheel.as.html"/>
+			</node>
+			<node icon="packageIcon" label="map3DTests" expanded="true">
+				<node icon="actionScriptIcon" label="OSMCubeGridScene.as" url="source/map3DTests/OSMCubeGridScene.as.html"/>
+				<node icon="actionScriptIcon" label="OSMCubeScene.as" url="source/map3DTests/OSMCubeScene.as.html"/>
+				<node icon="actionScriptIcon" label="OSMPlaneScene.as" url="source/map3DTests/OSMPlaneScene.as.html"/>
+				<node icon="actionScriptIcon" label="OSMPV3DScene.as" url="source/map3DTests/OSMPV3DScene.as.html"/>
+				<node icon="actionScriptIcon" label="OSMWaveScene.as" url="source/map3DTests/OSMWaveScene.as.html"/>
+			</node>
+			<node icon="actionScriptIcon" label="CubeGridTiles.as" url="source/CubeGridTiles.as.html"/>
+			<node icon="actionScriptIcon" label="main.as" url="source/main.as.html"/>
+			<node icon="actionScriptIcon" label="PV3DTest.as" url="source/PV3DTest.as.html"/>
+			<node icon="mxmlAppIcon" selected="true" label="Wave.as" url="source/Wave.as.html"/>
+		</node>
+	</nodes>
+</index>
