@@ -16,4 +16,5 @@ Flash Builder project folder from the experiments in my old blog
 -----
 
 Flash Builder project folder from the experiments in my old blog. Uses HYPE AS3 and Away3D lite to visualize the audio's spectrum.
+The audio used in that experiment is Magenta Arno Cost & Arias https://www.youtube.com/watch?v=2fH7NNKphgQ
 
