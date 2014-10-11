@@ -1,0 +1,186 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>ContextSavePNG.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">extended</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">util</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">framework</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CanvasPNGEncoder</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">framework</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BitmapCanvas</span>;
+
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Sprite</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Stage</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ContextMenuEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IOErrorEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FileReference</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ContextMenu</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ui</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ContextMenuItem</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ByteArray</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * Convenience class for adding context-menu encoding and saving of PNGs from BitmapCanvas instances.
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">ContextSavePNG</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">BAR_WIDTH</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 100;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">BAR_HEIGHT</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 5;        
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_stage</span>:<span class="ActionScriptDefault_Text">Stage</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_progressDisplay</span>:<span class="ActionScriptDefault_Text">Sprite</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_encoder</span>:<span class="ActionScriptDefault_Text">CanvasPNGEncoder</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_canvas</span>:<span class="ActionScriptDefault_Text">BitmapCanvas</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_encodeMenu</span>:<span class="ActionScriptDefault_Text">ContextMenu</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_encodeItem</span>:<span class="ActionScriptDefault_Text">ContextMenuItem</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_saveMenu</span>:<span class="ActionScriptDefault_Text">ContextMenu</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_saveItem</span>:<span class="ActionScriptDefault_Text">ContextMenuItem</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_waitMenu</span>:<span class="ActionScriptDefault_Text">ContextMenu</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_waitItem</span>:<span class="ActionScriptDefault_Text">ContextMenuItem</span>;    
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_data</span>:<span class="ActionScriptDefault_Text">ByteArray</span>;    
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_fileReference</span>:<span class="ActionScriptDefault_Text">FileReference</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Callback for when encoding starts
+         */</span>            
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onEncodeStart</span>:<span class="ActionScriptDefault_Text">Function</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Callback for encoding progress, passed percent complete
+         */</span>            
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onEncodeProgress</span>:<span class="ActionScriptDefault_Text">Function</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Callback for when encoding is complete
+         */</span>            
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onEncodeComplete</span>:<span class="ActionScriptDefault_Text">Function</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Callback for when save is complete
+         */</span>            
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onSaveComplete</span>:<span class="ActionScriptDefault_Text">Function</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Callback for when a save errors
+         */</span>            
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onSaveError</span>:<span class="ActionScriptDefault_Text">Function</span>;
+        
+        <span class="ActionScriptASDoc">/**
+         * Callback for when a save is canceled
+         */</span>            
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onSaveCancel</span>:<span class="ActionScriptDefault_Text">Function</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Constructor
+         * 
+         * @param canvas Instance of ICanvas to use
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">ContextSavePNG</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">canvas</span>:<span class="ActionScriptDefault_Text">BitmapCanvas</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_stage</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">stage</span>;
+            <span class="ActionScriptDefault_Text">_progressDisplay</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Sprite</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptDefault_Text">_canvas</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">canvas</span>;
+            <span class="ActionScriptDefault_Text">_encoder</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">CanvasPNGEncoder</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_encoder</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">onEncodeProgress</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">onPNGEncodeProgress</span>;
+            <span class="ActionScriptDefault_Text">_encoder</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">onEncodeComplete</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">onPNGEncodeComplete</span>;
+            
+            <span class="ActionScriptDefault_Text">_fileReference</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">FileReference</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_fileReference</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">COMPLETE</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">onPNGSaveComplete</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_fileReference</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">IOErrorEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IO_ERROR</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">onPNGError</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_fileReference</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CANCEL</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">onPNGCancel</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_encodeMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ContextMenu</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_encodeItem</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ContextMenuItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"Encode PNG"</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_encodeMenu</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hideBuiltInItems</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_encodeMenu</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">customItems</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_encodeItem</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_encodeItem</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ContextMenuEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MENU_ITEM_SELECT</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">onPNGEncode</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_waitMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ContextMenu</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_waitItem</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ContextMenuItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"Please wait, encoding..."</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_waitMenu</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hideBuiltInItems</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_waitMenu</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">customItems</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_waitItem</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_saveMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ContextMenu</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_saveItem</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ContextMenuItem</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"Save PNG..."</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_saveMenu</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hideBuiltInItems</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_saveMenu</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">customItems</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_saveItem</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_saveItem</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">ContextMenuEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MENU_ITEM_SELECT</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">onPNGSave</span><span class="ActionScriptBracket/Brace">)</span>;
+             
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contextMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_encodeMenu</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGEncode</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">ContextMenuEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">onEncodeStart</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">onEncodeStart</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contextMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_waitMenu</span>;
+            
+            <span class="ActionScriptDefault_Text">_encoder</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">encode</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">largeCanvas</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">stopCapture</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_stage</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGEncodeProgress</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">percent</span>:<span class="ActionScriptDefault_Text">Number</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">x</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_stage</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">stageWidth</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">BAR_WIDTH</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">/</span> 2;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">y</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_stage</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">stageHeight</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">BAR_HEIGHT</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">/</span> 2;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">width</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">percent</span> <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">BAR_WIDTH</span>;
+            
+            <span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">clear</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineStyle</span><span class="ActionScriptBracket/Brace">(</span>0<span class="ActionScriptOperator">,</span> 0x000000<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beginFill</span><span class="ActionScriptBracket/Brace">(</span>0xFFFFFF<span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawRect</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">y</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">width</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">BAR_HEIGHT</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beginFill</span><span class="ActionScriptBracket/Brace">(</span>0x000000<span class="ActionScriptOperator">,</span> 0.8<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawRect</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">width</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">y</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">BAR_WIDTH</span> <span class="ActionScriptOperator">-</span> <span class="ActionScriptDefault_Text">width</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">BAR_HEIGHT</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">onEncodeProgress</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">onEncodeProgress</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">percent</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGEncodeComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">data</span>:<span class="ActionScriptDefault_Text">ByteArray</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">onEncodeComplete</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">onEncodeComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">_stage</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_progressDisplay</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_data</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span>;
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contextMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_saveMenu</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGSave</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">ContextMenuEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_fileReference</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">save</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">_data</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"hype.png"</span><span class="ActionScriptBracket/Brace">)</span>;    
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGSaveComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contextMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_encodeMenu</span>;
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">onSaveComplete</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">onSaveComplete</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">IOErrorEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contextMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_saveMenu</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">onSaveError</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">onSaveError</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPNGCancel</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_canvas</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contextMenu</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">_saveMenu</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">onSaveCancel</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">onSaveCancel</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

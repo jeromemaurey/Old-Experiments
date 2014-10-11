@@ -1,0 +1,155 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>CubesViz01.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">away3DLite</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">away3dlite</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">containers</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ObjectContainer3D</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">away3dlite</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">materials</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ColorMaterial</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">away3dlite</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">primitives</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Cube6</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">away3dlite</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">templates</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BasicTemplate</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">com</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">leebrimelow</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Math2</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Event</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">geom</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Vector3D</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">media</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Sound</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">net</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">URLRequest</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">gs</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TweenLite</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">extended</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">behavior</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FunctionTracker</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">extended</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">layout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GridLayout</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">framework</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">sound</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SoundAnalyzer</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">CubesViz01</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">BasicTemplate</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">origin</span>:<span class="ActionScriptDefault_Text">Vector3D</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Vector3D</span><span class="ActionScriptBracket/Brace">(</span>0<span class="ActionScriptOperator">,</span>0<span class="ActionScriptOperator">,</span>0<span class="ActionScriptBracket/Brace">)</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">soundAnalyzer</span>:<span class="ActionScriptDefault_Text">SoundAnalyzer</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">sound</span>:<span class="ActionScriptDefault_Text">Sound</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">layout</span>:<span class="ActionScriptDefault_Text">GridLayout</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">cubeContainer</span>:<span class="ActionScriptDefault_Text">ObjectContainer3D</span>;
+        
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">CubesViz01</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">init</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            
+            <span class="ActionScriptComment">// hide Away3DLite stats
+</span>            <span class="ActionScriptDefault_Text">debug</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            
+            <span class="ActionScriptComment">// init our sound object
+</span>            <span class="ActionScriptDefault_Text">sound</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Sound</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">load</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">URLRequest</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"assets/sounds/magenta2.mp3"</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sound</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">play</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// init the HYPE sound analyzer
+</span>            <span class="ActionScriptDefault_Text">soundAnalyzer</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">SoundAnalyzer</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">soundAnalyzer</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">start</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// init the layout grid
+</span>            <span class="ActionScriptDefault_Text">layout</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">GridLayout</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">-</span>900<span class="ActionScriptOperator">,</span> <span class="ActionScriptOperator">-</span>175<span class="ActionScriptOperator">,</span> 30<span class="ActionScriptOperator">,</span> 30<span class="ActionScriptOperator">,</span> 60<span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// this will hold all the cubes
+</span>            <span class="ActionScriptDefault_Text">cubeContainer</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ObjectContainer3D</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">view</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">scene</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">cubeContainer</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// position and target the camera
+</span>            <span class="ActionScriptDefault_Text">camera</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">z</span> <span class="ActionScriptOperator">=</span> -2000;
+            <span class="ActionScriptDefault_Text">camera</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> -1600;
+            <span class="ActionScriptDefault_Text">camera</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> 400;
+            <span class="ActionScriptDefault_Text">camera</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lookAt</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">origin</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// create the 900 cubes
+</span>            <span class="ActionScriptDefault_Text">createCubes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// start the update camera behavior
+</span>            <span class="ActionScriptDefault_Text">moveCamera</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">createCubes</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            
+            <span class="ActionScriptReserved">for</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> 0; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> 900; <span class="ActionScriptOperator">++</span><span class="ActionScriptDefault_Text">i</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">cube</span>:<span class="ActionScriptDefault_Text">Cube6</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Cube6</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ColorMaterial</span><span class="ActionScriptBracket/Brace">(</span> 0x00 <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">random</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span> .5 <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span> 25<span class="ActionScriptOperator">,</span> 25<span class="ActionScriptOperator">,</span> 25<span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptDefault_Text">layout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">applyLayout</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">cube</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">baseFrequency</span>:<span class="ActionScriptDefault_Text">uint</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">%</span> 64<span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">*</span>4;
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">xScaleTracker</span>:<span class="ActionScriptDefault_Text">FunctionTracker</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">FunctionTracker</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">cube</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"scaleX"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">soundAnalyzer</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getFrequencyRange</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">baseFrequency</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">baseFrequency</span><span class="ActionScriptOperator">+</span>4<span class="ActionScriptOperator">,</span> .05<span class="ActionScriptOperator">,</span> 3<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">yScaleTracker</span>:<span class="ActionScriptDefault_Text">FunctionTracker</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">FunctionTracker</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">cube</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"scaleY"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">soundAnalyzer</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getFrequencyRange</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">baseFrequency</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">baseFrequency</span><span class="ActionScriptOperator">+</span>4<span class="ActionScriptOperator">,</span> .05<span class="ActionScriptOperator">,</span> 3<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">zScaleTracker</span>:<span class="ActionScriptDefault_Text">FunctionTracker</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">FunctionTracker</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">cube</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"scaleZ"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">soundAnalyzer</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getFrequencyRange</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptDefault_Text">baseFrequency</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">baseFrequency</span><span class="ActionScriptOperator">+</span>4<span class="ActionScriptOperator">,</span> .05<span class="ActionScriptOperator">,</span> 3<span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptDefault_Text">xScaleTracker</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">start</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">yScaleTracker</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">start</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">zScaleTracker</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">start</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptDefault_Text">cubeContainer</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">cube</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">moveCamera</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">x</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rand</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">-</span>1200<span class="ActionScriptOperator">,</span> 1200<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">y</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rand</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">-</span>1200<span class="ActionScriptOperator">,</span> 1200<span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">z</span>:<span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rand</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">-</span>2000<span class="ActionScriptOperator">,</span> 2000<span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">TweenLite</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">to</span>
+                <span class="ActionScriptBracket/Brace">(</span>
+                    <span class="ActionScriptDefault_Text">camera</span><span class="ActionScriptOperator">,</span> 
+                    4<span class="ActionScriptOperator">,</span> 
+                    <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">x</span>: <span class="ActionScriptDefault_Text">x</span><span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">y</span>: <span class="ActionScriptDefault_Text">y</span><span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">z</span>: <span class="ActionScriptDefault_Text">z</span><span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">delay</span>: 2<span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">onComplete</span>: <span class="ActionScriptDefault_Text">moveCamera</span><span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">onUpdate</span>: <span class="ActionScriptDefault_Text">onCameraMove</span>
+                    <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">TweenLite</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">to</span>
+                <span class="ActionScriptBracket/Brace">(</span>
+                    <span class="ActionScriptDefault_Text">origin</span><span class="ActionScriptOperator">,</span>
+                    4<span class="ActionScriptOperator">,</span>
+                    <span class="ActionScriptBracket/Brace">{</span>
+                        <span class="ActionScriptDefault_Text">x</span>: <span class="ActionScriptDefault_Text">Math2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rand</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">-</span>400<span class="ActionScriptOperator">,</span> 400<span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">y</span>: <span class="ActionScriptDefault_Text">Math2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rand</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptOperator">-</span>100<span class="ActionScriptOperator">,</span> 100<span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">,</span>
+                        <span class="ActionScriptDefault_Text">delay</span>: 2    
+                    <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptBracket/Brace">)</span>;
+                    
+                
+                
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onCameraMove</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">camera</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lookAt</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">origin</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">onPreRender</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">cubeContainer</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rotationY</span> <span class="ActionScriptOperator">+=</span> .1;
+            <span class="ActionScriptComment">//cubeContainer.rotationX++;
+</span>        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

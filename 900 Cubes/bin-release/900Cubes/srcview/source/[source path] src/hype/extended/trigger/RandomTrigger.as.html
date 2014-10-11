@@ -1,0 +1,39 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>RandomTrigger.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">extended</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trigger</span> <span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">framework</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trigger</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AbstractTrigger</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">hype</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">framework</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">trigger</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ITrigger</span>;
+
+    <span class="ActionScriptASDoc">/**
+     * Trigger that fires randomly given a set proability.
+     */</span>
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">RandomTrigger</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">AbstractTrigger</span> <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">ITrigger</span> <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_chance</span>:<span class="ActionScriptDefault_Text">uint</span>;
+
+        <span class="ActionScriptASDoc">/**
+         * Constructor
+         * 
+         * @param callback Function to call when this trigger fires
+         * @param target Target object to track
+         * @param chance The probabiliy
+         */</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">RandomTrigger</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">callback</span>:<span class="ActionScriptDefault_Text">Function</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">target</span>:<span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">chance</span>:<span class="ActionScriptDefault_Text">uint</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">callback</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">_chance</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">chance</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">run</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">target</span> : <span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">floor</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">random</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> <span class="ActionScriptDefault_Text">_chance</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> 0<span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

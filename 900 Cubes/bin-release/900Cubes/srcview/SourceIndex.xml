@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Learning HYPE</title>
+	<nodes>
+		<node icon="classpathIcon" label="[source path] src" expanded="true">
+			<node icon="packageIcon" label="hype.extended.behavior" expanded="true">
+				<node icon="actionScriptIcon" label="DirectionalVibration.as" url="source/[source path] src/hype/extended/behavior/DirectionalVibration.as.html"/>
+				<node icon="actionScriptIcon" label="FixedVibration.as" url="source/[source path] src/hype/extended/behavior/FixedVibration.as.html"/>
+				<node icon="actionScriptIcon" label="FunctionTracker.as" url="source/[source path] src/hype/extended/behavior/FunctionTracker.as.html"/>
+				<node icon="actionScriptIcon" label="MouseFollow.as" url="source/[source path] src/hype/extended/behavior/MouseFollow.as.html"/>
+				<node icon="actionScriptIcon" label="MouseFollowEase.as" url="source/[source path] src/hype/extended/behavior/MouseFollowEase.as.html"/>
+				<node icon="actionScriptIcon" label="MouseFollowSpring.as" url="source/[source path] src/hype/extended/behavior/MouseFollowSpring.as.html"/>
+				<node icon="actionScriptIcon" label="Oscillator.as" url="source/[source path] src/hype/extended/behavior/Oscillator.as.html"/>
+				<node icon="actionScriptIcon" label="SimpleBallistic.as" url="source/[source path] src/hype/extended/behavior/SimpleBallistic.as.html"/>
+				<node icon="actionScriptIcon" label="Swarm.as" url="source/[source path] src/hype/extended/behavior/Swarm.as.html"/>
+				<node icon="actionScriptIcon" label="VariableVibration.as" url="source/[source path] src/hype/extended/behavior/VariableVibration.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.extended.color" expanded="true">
+				<node icon="actionScriptIcon" label="ColorPool.as" url="source/[source path] src/hype/extended/color/ColorPool.as.html"/>
+				<node icon="actionScriptIcon" label="PixelColorist.as" url="source/[source path] src/hype/extended/color/PixelColorist.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.extended.layout" expanded="true">
+				<node icon="actionScriptIcon" label="GridLayout.as" url="source/[source path] src/hype/extended/layout/GridLayout.as.html"/>
+				<node icon="actionScriptIcon" label="ShapeLayout.as" url="source/[source path] src/hype/extended/layout/ShapeLayout.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.extended.rhythm" expanded="true">
+				<node icon="actionScriptIcon" label="FilterCanvasRhythm.as" url="source/[source path] src/hype/extended/rhythm/FilterCanvasRhythm.as.html"/>
+				<node icon="actionScriptIcon" label="FilterRhythm.as" url="source/[source path] src/hype/extended/rhythm/FilterRhythm.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.extended.trigger" expanded="true">
+				<node icon="actionScriptIcon" label="ExitShapeTrigger.as" url="source/[source path] src/hype/extended/trigger/ExitShapeTrigger.as.html"/>
+				<node icon="actionScriptIcon" label="RandomTrigger.as" url="source/[source path] src/hype/extended/trigger/RandomTrigger.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.extended.util" expanded="true">
+				<node icon="actionScriptIcon" label="ContextSavePNG.as" url="source/[source path] src/hype/extended/util/ContextSavePNG.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.behavior" expanded="true">
+				<node icon="actionScriptIcon" label="AbstractBehavior.as" url="source/[source path] src/hype/framework/behavior/AbstractBehavior.as.html"/>
+				<node icon="actionScriptIcon" label="BehaviorStore.as" url="source/[source path] src/hype/framework/behavior/BehaviorStore.as.html"/>
+				<node icon="actionScriptIcon" label="IBehavior.as" url="source/[source path] src/hype/framework/behavior/IBehavior.as.html"/>
+				<node icon="actionScriptIcon" label="SimpleBehavior.as" url="source/[source path] src/hype/framework/behavior/SimpleBehavior.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.canvas" expanded="true">
+				<node icon="actionScriptIcon" label="CanvasPNGEncoder.as" url="source/[source path] src/hype/framework/canvas/CanvasPNGEncoder.as.html"/>
+				<node icon="actionScriptIcon" label="GridCanvas.as" url="source/[source path] src/hype/framework/canvas/GridCanvas.as.html"/>
+				<node icon="actionScriptIcon" label="ICanvas.as" url="source/[source path] src/hype/framework/canvas/ICanvas.as.html"/>
+				<node icon="actionScriptIcon" label="SimpleCanvas.as" url="source/[source path] src/hype/framework/canvas/SimpleCanvas.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.canvas.filter" expanded="true">
+				<node icon="actionScriptIcon" label="BlurFilterScaler.as" url="source/[source path] src/hype/framework/canvas/filter/BlurFilterScaler.as.html"/>
+				<node icon="actionScriptIcon" label="GlowFilterScaler.as" url="source/[source path] src/hype/framework/canvas/filter/GlowFilterScaler.as.html"/>
+				<node icon="actionScriptIcon" label="IFilterScaler.as" url="source/[source path] src/hype/framework/canvas/filter/IFilterScaler.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.color" expanded="true">
+				<node icon="actionScriptIcon" label="IColorist.as" url="source/[source path] src/hype/framework/color/IColorist.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.core" expanded="true">
+				<node icon="actionScriptIcon" label="Accessor.as" url="source/[source path] src/hype/framework/core/Accessor.as.html"/>
+				<node icon="actionScriptIcon" label="HypeMath.as" url="source/[source path] src/hype/framework/core/HypeMath.as.html"/>
+				<node icon="actionScriptIcon" label="ObjectNode.as" url="source/[source path] src/hype/framework/core/ObjectNode.as.html"/>
+				<node icon="actionScriptIcon" label="ObjectPool.as" url="source/[source path] src/hype/framework/core/ObjectPool.as.html"/>
+				<node icon="actionScriptIcon" label="ObjectSet.as" url="source/[source path] src/hype/framework/core/ObjectSet.as.html"/>
+				<node icon="actionScriptIcon" label="TimeType.as" url="source/[source path] src/hype/framework/core/TimeType.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.display" expanded="true">
+				<node icon="actionScriptIcon" label="BitmapCanvas.as" url="source/[source path] src/hype/framework/display/BitmapCanvas.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.interactive" expanded="true">
+				<node icon="actionScriptIcon" label="Adjuster.as" url="source/[source path] src/hype/framework/interactive/Adjuster.as.html"/>
+				<node icon="actionScriptIcon" label="HotKey.as" url="source/[source path] src/hype/framework/interactive/HotKey.as.html"/>
+				<node icon="actionScriptIcon" label="KeyData.as" url="source/[source path] src/hype/framework/interactive/KeyData.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.layout" expanded="true">
+				<node icon="actionScriptIcon" label="AbstractLayout.as" url="source/[source path] src/hype/framework/layout/AbstractLayout.as.html"/>
+				<node icon="actionScriptIcon" label="ILayout.as" url="source/[source path] src/hype/framework/layout/ILayout.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.rhythm" expanded="true">
+				<node icon="actionScriptIcon" label="AbstractRhythm.as" url="source/[source path] src/hype/framework/rhythm/AbstractRhythm.as.html"/>
+				<node icon="actionScriptIcon" label="IRhythm.as" url="source/[source path] src/hype/framework/rhythm/IRhythm.as.html"/>
+				<node icon="actionScriptIcon" label="RhythmInfo.as" url="source/[source path] src/hype/framework/rhythm/RhythmInfo.as.html"/>
+				<node icon="actionScriptIcon" label="RhythmManager.as" url="source/[source path] src/hype/framework/rhythm/RhythmManager.as.html"/>
+				<node icon="actionScriptIcon" label="SimpleRhythm.as" url="source/[source path] src/hype/framework/rhythm/SimpleRhythm.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.sound" expanded="true">
+				<node icon="actionScriptIcon" label="SoundAnalyzer.as" url="source/[source path] src/hype/framework/sound/SoundAnalyzer.as.html"/>
+			</node>
+			<node icon="packageIcon" label="hype.framework.trigger" expanded="true">
+				<node icon="actionScriptIcon" label="AbstractTrigger.as" url="source/[source path] src/hype/framework/trigger/AbstractTrigger.as.html"/>
+				<node icon="actionScriptIcon" label="ITrigger.as" url="source/[source path] src/hype/framework/trigger/ITrigger.as.html"/>
+				<node icon="actionScriptIcon" label="SimpleTrigger.as" url="source/[source path] src/hype/framework/trigger/SimpleTrigger.as.html"/>
+			</node>
+			<node icon="packageIcon" label="net.hires.debug" expanded="true">
+				<node icon="actionScriptIcon" label="Stats.as" url="source/[source path] src/net/hires/debug/Stats.as.html"/>
+			</node>
+		</node>
+		<node label="design-files">
+			<node icon="flaIcon" label="assets.fla" url="source/design-files/assets.fla"/>
+			<node label="assets.swc" url="source/design-files/assets.swc"/>
+			<node icon="swfIcon" label="assets.swf" url="source/design-files/assets.swf"/>
+		</node>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="src">
+			<node icon="packageIcon" label="away3DLite" expanded="true">
+				<node icon="actionScriptIcon" label="CubesViz01.as" url="source/away3DLite/CubesViz01.as.html"/>
+			</node>
+			<node icon="actionScriptIcon" label="FramePreload.as" url="source/FramePreload.as.html"/>
+			<node icon="mxmlAppIcon" selected="true" label="main.as" url="source/main.as.html"/>
+			<node icon="cssIcon" label="Main.css" url="source/Main.css.html"/>
+		</node>
+	</nodes>
+	<zipfile label="Download source (ZIP, 39K)" url="Learning HYPE.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>
